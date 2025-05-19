@@ -29,14 +29,17 @@
 
 class Solution:
     def numSquares(self, n: int) -> int:
-        dp = [n+1 for _ in range(n+1)]
+       # 创建一个数组 dp，其中 dp[i] 表示和为 i 的完全平方数的最少数量
+        dp = [float('inf')] * (n + 1)
+        dp[0] = 0  # 和为 0 时需要 0 个完全平方数
 
-        dp[0] = 0
-        for i in range(1, int(sqrt(n)) + 1):
-            num = i * i
-            for w in range(num, n+1):
-                dp[w] = min(dp[w], dp[w - num] + 1)
-        if dp[n] != n+1:
-            return dp[n]
-        return -1
+        # 遍历 1 到 n
+        for i in range(1, n + 1):
+            # 遍历所有小于等于 i 的完全平方数
+            j = 1
+            while j * j <= i:
+                dp[i] = min(dp[i], dp[i - j * j] + 1)
+                j += 1
+
+        return dp[n] 
 
